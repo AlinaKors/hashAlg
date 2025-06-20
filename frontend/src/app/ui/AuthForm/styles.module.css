@@ -1,0 +1,13 @@
+#btnsignin {
+  border: 1px solid;
+  border-radius: 16px;
+  padding: 8px 32px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 468px;
+  margin-bottom: 32px;
+}
