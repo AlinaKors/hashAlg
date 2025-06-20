@@ -3,6 +3,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from '@mui/material';
 import { FormHash } from '../FormHash/FormHash';
 import styles from './styles.module.css';
+import Link from 'next/link';
 
 export default function AuthForm() {
   const { data: session } = useSession();
@@ -19,13 +20,13 @@ export default function AuthForm() {
     <>
       <header className={styles.header}>
         <Button onClick={() => signOut()}>Выйти</Button>
-        {/* {session.user.role === 'admin' && (
+        {session.user.role === 'admin' && (
           <Link href="/audit">
             <Button variant="contained" fullWidth sx={{ mt: 2 }}>
               Audit
             </Button>
           </Link>
-        )} */}
+        )}
       </header>
       <FormHash />
     </>

@@ -23,6 +23,8 @@ declare module 'next-auth/jwt' {
   }
 }
 
+console.log(process.env.GITHUB_ID);
+
 const handler = NextAuth({
   providers: [
     GitHubProvider({

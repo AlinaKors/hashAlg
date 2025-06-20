@@ -27,7 +27,13 @@ export const FormHash = () => {
   };
 
   const handleHash = async () => {
-    setHashResult('afasgadfgadg');
+    const res = await fetch('http://localhost:4000/api/hash', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ algoritm, value: userString }),
+    });
+    const data = await res.json();
+    setHashResult(data.hash);
   };
 
   return (
