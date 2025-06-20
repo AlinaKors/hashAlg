@@ -1,7 +1,11 @@
 'use client';
-
-import { FormHash } from './ui/FormHash/FormHash';
+import { SessionProvider } from 'next-auth/react';
+import AuthForm from './ui/AuthForm/AuthForm';
 
 export default function Page() {
-  return <FormHash />;
+  return (
+    <SessionProvider>
+      <AuthForm />
+    </SessionProvider>
+  );
 }
