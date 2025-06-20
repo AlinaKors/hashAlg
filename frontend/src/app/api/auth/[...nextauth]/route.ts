@@ -50,6 +50,42 @@ const handler = NextAuth({
       return session;
     },
   },
+  events: {
+    async signIn({ user }) {
+      try {
+        await fetch('http://localhost:4000/api/audit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            action: 'USER_SIGNIN',
+            name: user.name,
+            email: user.email,
+            role: user.name === 'Alina' ? 'admin' : 'user',
+          }),
+        });
+      } catch (err) {
+        console.error('Ошибка логирования входа:', err);
+      }
+    },
+    async signOut({ token }) {
+      try {
+        await fetch('http://localhost:4000/api/audit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: token.sub,
+            action: 'USER_SIGNOUT',
+            name: token.name,
+            email: token.email,
+            role: token.role,
+          }),
+        });
+      } catch (err) {
+        console.error('Ошибка логирования выхода:', err);
+      }
+    },
+  },
 });
 
 export { handler as GET, handler as POST };

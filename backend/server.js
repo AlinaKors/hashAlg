@@ -2,10 +2,19 @@ import express from 'express';
 import next from 'next';
 import cors from 'cors';
 import crypto from 'crypto';
+import { Pool } from 'pg';
 
 const dev = process.env.NODE_ENV !== 'production';
 const appNext = next({ dev, dir: '../frontend/src' });
 const handle = appNext.getRequestHandler();
+
+const db = new Pool({
+  user: 'postgres', // Пользователь базы данных
+  host: 'localhost', // Хост базы данных (обычно localhost)
+  database: 'postgres', // Название базы данных, которую мы создали
+  password: '1', // Пароль пользователя postgres
+  port: 5432, // Порт PostgreSQL (по умолчанию 5432)
+});
 
 appNext
   .prepare()
@@ -14,6 +23,22 @@ appNext
 
     server.use(cors());
     server.use(express.json());
+
+    server.post('/api/audit', async (req, res) => {
+      const { userId, action, name, email, role } = req.body;
+
+      try {
+        await db.query(
+          `INSERT INTO audit_logs (user_id, user_name, user_email, user_role, action)
+       VALUES ($1, $2, $3, $4, $5)`,
+          [userId, name, email, role, action],
+        );
+        res.status(200).json({ status: 'ok' });
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to log audit event' });
+      }
+    });
 
     server.post('/api/hash', (req, res) => {
       const { algoritm, value } = req.body;
