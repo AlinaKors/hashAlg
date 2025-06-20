@@ -40,6 +40,16 @@ appNext
       }
     });
 
+    server.get('/api/audit', async (req, res) => {
+      try {
+        const result = await db.query('SELECT * FROM audit_logs ORDER BY created_at ASC LIMIT 100');
+        res.json(result.rows);
+      } catch (err) {
+        console.error('Ошибка получения логов:', err);
+        res.status(500).json({ error: 'Ошибка сервера' });
+      }
+    });
+
     server.post('/api/hash', (req, res) => {
       const { algoritm, value } = req.body;
 
