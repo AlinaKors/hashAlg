@@ -9,5 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
 }
