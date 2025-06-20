@@ -17,13 +17,37 @@ const Algoritm = {
   SHA256: 'sha256',
 };
 
-export const FormHash = () => {
+type FormHash = {
+  user: {
+    id?: string | null;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role: 'admin' | 'user';
+  };
+};
+
+export const FormHash: React.FC<FormHash> = ({ user }) => {
   const [algoritm, setAlgoritm] = useState('');
   const [userString, setUserString] = useState('');
   const [hashResult, setHashResult] = useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     setAlgoritm(event.target.value);
+  };
+
+  const addHashActionDB = async () => {
+    await fetch('http://localhost:4000/api/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: user.id,
+        action: 'USER_HASHSUBMIT',
+        name: user.name,
+        email: user.email,
+        role: user.name === 'Alina' ? 'admin' : 'user',
+      }),
+    });
   };
 
   const handleHash = async () => {
@@ -34,6 +58,7 @@ export const FormHash = () => {
     });
     const data = await res.json();
     setHashResult(data.hash);
+    addHashActionDB();
   };
 
   return (

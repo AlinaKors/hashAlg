@@ -28,7 +28,7 @@ export default function AuthForm() {
           </Link>
         )}
       </header>
-      <FormHash />
+      <FormHash user={session.user} />
     </>
   );
 }
